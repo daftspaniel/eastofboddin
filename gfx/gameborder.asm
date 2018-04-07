@@ -1,36 +1,36 @@
-*
-* Draw bushes across the screen.
-*
+*===================================
+*     Draw bushes across the screen.
+*===================================
         ORG $4E21
         LDX #$701 ; Screen base address 
-        LDB #$00 ;
+        LDB #$1D ;
 TOPROW  BSR BUSH ;
-        ADDB #$01 ;
+        DECB ;
         LEAX 1,X ;
-        CMPB #$1D ;
-        BLE TOPROW ;
-        LDB #$00 ; Draw columns so reset B reg.
+        BGE TOPROW ;
+        
         LDX #$800 ; Start address 
+        LDB #$13 ;
 LHSCOL  BSR BUSH ;
-        ADDB #$01 ;
+        DECB ;
         LEAX 256,X ; Add row.
-        CMPB #$14 ;
-        BLE LHSCOL ;
-        LDB #$00 ; Draw columns so reset B reg.
+        BGE LHSCOL ;
+        
         LDX #$81F ; Start address 
+        LDB #$13 ;
 RHSCOL  BSR BUSH ;
-        ADDB #$01 ;
+        DECB ;
         LEAX 256,X ; Add row.
-        CMPB #$14 ;
-        BLE RHSCOL
-        LDB #$00 ; 
-        LDX #$1D01 ; Start address 
-LOWROW  BSR UBUSH ;
-        ADDB #$01 ;
+        BGE RHSCOL
+        
+        LDX #$1C01 ; Start address 
+        LDB #$1D ;
+LOWROW  BSR BUSH ;
+        DECB ;
         LEAX 1,X ;
-        CMPB #$1D ;
-        BLE LOWROW ;
+        BGE LOWROW ;
         RTS ; EXIT PROGRAM
+*------------------------------------
 BUSH    LDA #$00 ;
         STA ,X  ;
         LDA #$28 ; 
